@@ -31,6 +31,7 @@ private:
     float x_light;
     float y_light;
     float z_light;
+    float color=0;
     bool light=false;
     QMatrix4x4 matrix;
     GLuint m_posAtr;
@@ -51,6 +52,7 @@ public slots:
     void changeX_light(int);
     void changeY_light(int);
     void changeZ_light(int);
+    void changeColor(int);
 
 };
 

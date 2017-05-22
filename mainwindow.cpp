@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSlider_5->setValue(5);
     ui->horizontalSlider_7->setValue(8);
     ui->horizontalSlider_8->setValue(0);
+    ui->verticalSlider->setMaximum(22);
+    ui->verticalSlider->setMinimum(-20);
+    ui->verticalSlider->setValue(0);
 
 
 
@@ -73,4 +76,9 @@ void MainWindow::on_horizontalSlider_7_valueChanged(int value)
 void MainWindow::on_horizontalSlider_8_valueChanged(int value)
 {
     widget->changeZ_light(value);
+}
+
+void MainWindow::on_verticalSlider_valueChanged(int value)
+{
+    widget->changeColor(value);
 }

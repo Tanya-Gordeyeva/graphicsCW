@@ -9,7 +9,7 @@ MyWidget::MyWidget(QWidget *parent):
 {
     setGeometry(50,50,500,500);
     R=0.9f;
-    size=M_PI/18.0;
+    size=M_PI/27.0;
     x_light=1.0f;
     y_light=1.0f;
     z_light=0.0f;
@@ -114,7 +114,11 @@ void MyWidget::draw(){
         for (double t =size/18.0; t <= 2*M_PI; t += size){
             glEnable(GL_CULL_FACE);
             glCullFace(GL_FRONT);
-            m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0)+0.4),0.5*abs(sin(j)),-0.5*sin(j+M_PI/2.0),1.0);
+            if (color<=0)
+                m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0))+0.3+color/2.0,0.5*abs(sin(j-color/2.0))+0.1+color/2.0,-0.5*sin(j+M_PI/2.0)-color/2.0,1.0);
+            else
+                m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0))+0.3+color/2.0,0.5*abs(sin(j+color/2.0))+0.1-color/2.0,-0.5*sin(j+M_PI/2.0)-color/2.0,1.0);
+
             vec[0]=k1;
             vec[1]=(0.2*R*cos(j)+R/2.0)*cos(t);
             vec[2]=(0.2*R*cos(j)+R/2.0)*sin(t);
@@ -161,29 +165,32 @@ void MyWidget::draw(){
     }
 
     m_program->setUniformValue("light", false );
-    for (double j = -1.0; j<=1.0; j += 0.01){
+    for (double j = -0.99; j<=1.01; j += 0.01){
 
-        vec[0]=0.9;
+        vec[0]=1.0;
         vec[1]=j;
         vec[2]=0.0;
-        vec[3]=0.7;
+        vec[3]=0.8;
         vec[4]=j;
         vec[5]=0.0;
-        vec[6]=0.7;
+        vec[6]=0.8;
         vec[7]=j-0.01;
         vec[8]=0.0;
-        vec[9]=0.9;
+        vec[9]=1.0;
         vec[10]=j-0.01;
         vec[11]=0.0;
-        m_program->setUniformValue(m_colAtr,j,j/2.0,-j,1.0);
+        if (color>0)
+        m_program->setUniformValue(m_colAtr,j*1.5+0.6+color,(1.0-abs(j+color))*1.5-color,-j*1.5-color,1.0);
+        else
+        m_program->setUniformValue(m_colAtr,j*1.5+0.6+color,(1.0-abs(j+color))*1.5+2.0*color,-j*1.5-1.5*color,1.0);
         glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
         glEnableVertexAttribArray( m_posAtr );
 
         glDrawArrays( GL_POLYGON, 0, 4);
         glDisable(GL_CULL_FACE);
         glDisableVertexAttribArray( m_posAtr);
-}
-m_program->release();
+    }
+    m_program->release();
 
 }
 
@@ -272,6 +279,12 @@ void MyWidget::changeY_light(int val){
 void MyWidget::changeZ_light(int val){
     z_light = val;
     z_light = z_light/10.0;
+    this->updateGL();
+}
+
+void MyWidget::changeColor(int val){
+    color = -val;
+    color = color/10.0;
     this->updateGL();
 }
 
