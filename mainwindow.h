@@ -25,6 +25,12 @@ private slots:
 
     void on_horizontalSlider_4_valueChanged(int value);
 
+    void on_horizontalSlider_5_valueChanged(int value);
+
+    void on_horizontalSlider_7_valueChanged(int value);
+
+    void on_horizontalSlider_8_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     MyWidget *widget;

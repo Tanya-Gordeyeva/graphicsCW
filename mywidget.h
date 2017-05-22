@@ -28,6 +28,9 @@ public:
 private:
     float R;
     int prev[3]={0,0,0};
+    float x_light;
+    float y_light;
+    float z_light;
     QMatrix4x4 matrix;
     GLuint m_posAtr;
     GLuint m_colAtr;
@@ -44,6 +47,9 @@ public slots:
     void rotateY(int);
     void rotateZ(int);
     void changeR(int);
+    void changeX_light(int);
+    void changeY_light(int);
+    void changeZ_light(int);
 
 };
 

@@ -99,7 +99,7 @@ void MyWidget::draw(){
         }
             m_program->setUniformValue("normal",vec[0],vec[1],vec[2]);
 
-            m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0)+0.4)+0.3,0.5*abs(sin(j))-0.3,-0.5*sin(j+M_PI/2.0)-0.3,1.0);
+            m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0)+0.4),0.5*abs(sin(j)),-0.5*sin(j+M_PI/2.0),1.0);
 
             y=k;
             k=0.2*R*sin(j);
