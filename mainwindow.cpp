@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSlider_5->setMaximum(10);
     ui->horizontalSlider_7->setMaximum(10);
     ui->horizontalSlider_8->setMaximum(10);
-    ui->horizontalSlider_5->setValue(10);
-    ui->horizontalSlider_7->setValue(10);
+    ui->horizontalSlider_5->setValue(5);
+    ui->horizontalSlider_7->setValue(8);
     ui->horizontalSlider_8->setValue(0);
 
 

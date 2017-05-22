@@ -67,83 +67,123 @@ void MyWidget::draw(){
 
     //отрисовка фигуры
     GLfloat vec[12];
-    float k = 0.2*R*sin(-size/20.0);
-    double y = 0;
+    if (light){
+        m_program->setUniformValue("light", true );
+    } else {
+        m_program->setUniformValue("lightPos", QVector4D(x_light,y_light,z_light,1.0) );
+        m_program->setUniformValue("light", false );
+    }
+    //    for (double j = 0; j<=2.0*M_PI; j += size/2.0){
+    //            for (double t =0; t <= 2*M_PI; t += size){
 
+    //                vec[0]=x_light+k;
+    //                vec[1]=y_light+0.03*sin(j)*cos(t);
+    //                vec[2]=z_light+0.03*sin(j)*sin(t);
+    //                vec[3]=x_light+k;
+    //                vec[4]=y_light+0.03*sin(j)*cos(t-size);
+    //                vec[5]=z_light+0.03*sin(j)*sin(t-size);
+    //                vec[6]=x_light+y;
+    //                vec[7]=y_light+0.03*sin(j-size/2.0)*cos(t-size);
+    //                vec[8]=z_light+0.03*sin(j)*sin(t-size);
+    //                vec[9]=x_light+y;
+    //                vec[10]=y_light+0.03*sin(j-size/2.0)*cos(t);
+    //                vec[11]=z_light+0.03*sin(j-size/2.0)*sin(t);
+    //                glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
+    //                glEnableVertexAttribArray( m_posAtr );
+    //                glEnable(GL_CULL_FACE);
+    //                glCullFace(GL_FRONT);
+    //                glDrawArrays( GL_POLYGON, 0, 4);
+    //                glDisable(GL_CULL_FACE);
+    //                glDisableVertexAttribArray( m_posAtr);
+
+
+    //        }
+    //            //m_program->setUniformValue("normal",vec[0],vec[1],vec[2]);
+
+    //            m_program->setUniformValue(m_colAtr,1.0,1.0,1.0,1.0);
+    //            y=k;
+    //            k=0.03*cos(j);
+    //    }
+    float k1 = 0.2*R*sin(-size/20.0);
+    float y1 = 0;
+    float y = 0;
+    float k = 0;
+    m_program->setUniformValue("light", true );
 
     for (double j = -3*M_PI/2.0; j<=M_PI/2.0+size; j += size/2.0){
-            for (double t =size/18.0; t <= 2*M_PI; t += size){
+        for (double t =size/18.0; t <= 2*M_PI; t += size){
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+            m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0)+0.4),0.5*abs(sin(j)),-0.5*sin(j+M_PI/2.0),1.0);
+            vec[0]=k1;
+            vec[1]=(0.2*R*cos(j)+R/2.0)*cos(t);
+            vec[2]=(0.2*R*cos(j)+R/2.0)*sin(t);
+            vec[3]=k1;
+            vec[4]=(0.2*R*cos(j)+R/2.0)*cos(t-size);
+            vec[5]=(0.2*R*cos(j)+R/2.0)*sin(t-size);
+            vec[6]=y1;
+            vec[7]=(0.2*R*cos(j-size/2.0)+R/2.0)*cos(t-size);
+            vec[8]=(0.2*R*cos(j-size/2.0)+R/2.0)*sin(t-size);
+            vec[9]=y1;
+            vec[10]=(0.2*R*cos(j-size/2.0)+R/2.0)*cos(t);
+            vec[11]=(0.2*R*cos(j-size/2.0)+R/2.0)*sin(t);
+            m_program->setUniformValue("normal",vec[0]+R/2.0,vec[1]+R/2.0,vec[2]+R/2.0);
+            glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
+            glEnableVertexAttribArray( m_posAtr );
+            glDrawArrays( GL_POLYGON, 0, 4);
 
-                vec[0]=k;
-                vec[1]=(0.2*R*cos(j)+R/2.0)*cos(t);
-                vec[2]=(0.2*R*cos(j)+R/2.0)*sin(t);
-                vec[3]=k;
-                vec[4]=(0.2*R*cos(j)+R/2.0)*cos(t-size);
-                vec[5]=(0.2*R*cos(j)+R/2.0)*sin(t-size);
-                vec[6]=y;
-                vec[7]=(0.2*R*cos(j-size/2.0)+R/2.0)*cos(t-size);
-                vec[8]=(0.2*R*cos(j-size/2.0)+R/2.0)*sin(t-size);
-                vec[9]=y;
-                vec[10]=(0.2*R*cos(j-size/2.0)+R/2.0)*cos(t);
-                vec[11]=(0.2*R*cos(j-size/2.0)+R/2.0)*sin(t);
-                glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
-                glEnableVertexAttribArray( m_posAtr );
-                glEnable(GL_CULL_FACE);
-                glCullFace(GL_FRONT);
-                glDrawArrays( GL_POLYGON, 0, 4);
-                glDisable(GL_CULL_FACE);
-
-                glDisableVertexAttribArray( m_posAtr);
-
-
-        }
-            m_program->setUniformValue("normal",vec[0],vec[1],vec[2]);
-
-            m_program->setUniformValue(m_colAtr,0.5*(sin(j+M_PI/2.0)+0.4)+0.3,0.5*abs(sin(j))-0.3,-0.5*sin(j+M_PI/2.0)-0.3,1.0);
-
-            y=k;
-            k=0.2*R*sin(j);
-//            if(j>-M_PI && j<-M_PI+size/2.0 || j>-M_PI/2.0 && j<-M_PI/2.0+size/2.0
-//                   || j>0 && j<size/2.0)
-//            qDebug()<<cos(j)/0.2*R*(0.2*R*cos(j)+R/2.0);
-
-
-    }
-
-    y = 0;
-    k = 0;
-    for (double j = 0; j<=2.0*M_PI; j += size/2.0){
-            for (double t =0; t <= 2*M_PI; t += size){
-
-                vec[0]=x_light+k;
-                vec[1]=y_light+0.03*sin(j)*cos(t);
-                vec[2]=z_light+0.03*sin(j)*sin(t);
-                vec[3]=x_light+k;
-                vec[4]=y_light+0.03*sin(j)*cos(t-size);
-                vec[5]=z_light+0.03*sin(j)*sin(t-size);
-                vec[6]=x_light+y;
-                vec[7]=y_light+0.03*sin(j-size/2.0)*cos(t-size);
-                vec[8]=z_light+0.03*sin(j)*sin(t-size);
-                vec[9]=x_light+y;
-                vec[10]=y_light+0.03*sin(j-size/2.0)*cos(t);
-                vec[11]=z_light+0.03*sin(j-size/2.0)*sin(t);
-                glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
-                glEnableVertexAttribArray( m_posAtr );
-                glDrawArrays( GL_POLYGON, 0, 4);
-                glDisableVertexAttribArray( m_posAtr);
-
-
-        }
-            m_program->setUniformValue("normal",vec[0],vec[1],vec[2]);
-
+            glDisableVertexAttribArray( m_posAtr);
+            vec[0]=x_light+k;
+            vec[1]=y_light+0.02*sin(j)*cos(t);
+            vec[2]=z_light+0.02*sin(j)*sin(t);
+            vec[3]=x_light+k;
+            vec[4]=y_light+0.02*sin(j)*cos(t-size);
+            vec[5]=z_light+0.02*sin(j)*sin(t-size);
+            vec[6]=x_light+y;
+            vec[7]=y_light+0.02*sin(j-size/2.0)*cos(t-size);
+            vec[8]=z_light+0.02*sin(j)*sin(t-size);
+            vec[9]=x_light+y;
+            vec[10]=y_light+0.02*sin(j-size/2.0)*cos(t);
+            vec[11]=z_light+0.02*sin(j-size/2.0)*sin(t);
             m_program->setUniformValue(m_colAtr,1.0,1.0,1.0,1.0);
-            y=k;
-            k=0.03*cos(j);
+            glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
+            glEnableVertexAttribArray( m_posAtr );
 
+            glDrawArrays( GL_POLYGON, 0, 4);
+            glDisable(GL_CULL_FACE);
+            glDisableVertexAttribArray( m_posAtr);
+        }
 
+        y1=k1;
+        k1=0.2*R*sin(j);
+        y=k;
+        k=0.02*cos(j);
     }
 
-   m_program->release();
+    m_program->setUniformValue("light", false );
+    for (double j = -1.0; j<=1.0; j += 0.01){
+
+        vec[0]=0.9;
+        vec[1]=j;
+        vec[2]=0.0;
+        vec[3]=0.7;
+        vec[4]=j;
+        vec[5]=0.0;
+        vec[6]=0.7;
+        vec[7]=j-0.01;
+        vec[8]=0.0;
+        vec[9]=0.9;
+        vec[10]=j-0.01;
+        vec[11]=0.0;
+        m_program->setUniformValue(m_colAtr,j,j/2.0,-j,1.0);
+        glVertexAttribPointer( m_posAtr, 3, GL_FLOAT, GL_FALSE, 0,vec);
+        glEnableVertexAttribArray( m_posAtr );
+
+        glDrawArrays( GL_POLYGON, 0, 4);
+        glDisable(GL_CULL_FACE);
+        glDisableVertexAttribArray( m_posAtr);
+}
+m_program->release();
 
 }
 

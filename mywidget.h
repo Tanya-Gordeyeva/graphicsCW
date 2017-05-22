@@ -31,6 +31,7 @@ private:
     float x_light;
     float y_light;
     float z_light;
+    bool light=false;
     QMatrix4x4 matrix;
     GLuint m_posAtr;
     GLuint m_colAtr;
